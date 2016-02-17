@@ -1,0 +1,97 @@
+
+<div class="jumbotron text-center" ng-if="!main.loggedIn">
+	
+	<div>
+		<h1>Please Sign up!</h1>
+	</div>
+
+	<div>
+		<p>Login to write your feedback</p>
+		<a href="/login" class="btn btn-primary">Login</a>
+	</div>
+</div>
+
+
+
+<div class="row" ng-if="main.loggedIn">
+	
+	<div ng-controller="FeedbackController as feedback">
+		<ul class="nav nav-pills" style="padding-left:12px">
+		  	<li role="presentation" id="homeScreen" class="active" ng-click="feedback.showView(1)"><a href="#">Write Feedback</a></li>
+		  	<li role="presentation" id="feedbackScreen" ng-click="feedback.showView(2)"><a href="#">Your Feedback</a></li>
+		</ul><br><br>
+		<div class="col-md-3" class="panel-heading" ng-show="feedback.doShowFeedback == false">
+			<div ng-class="row" class="panel panel-primary">
+				<div class="panel-heading">Current Users</div>
+				<div class="list-group" style="height: 300px; overflow: scroll;">
+					<ul>
+					  	<li ng-repeat="item in feedback.allUsers" style="padding-top:2px;">
+					  		<a href="#" class="list-group-item" ng-click="feedback.addFeedback($event, item)">{{item.name}}</a>
+					  		
+					  	</li>
+		  			</ul>
+		  		</div>
+		  	</div>
+		</div>
+		<div class="col-md-9">
+			<div ng-class="row">
+				<div class="panel panel-primary" ng-show="feedback.doShowFeedback == false">
+					<div class="panel-heading">Write your feedback </div>
+					<div class="panel-body">
+						<div >
+							<p>Write your feedback for {{feedback.currentFeedback.name}}</p>
+						<div/>
+						<form ng-submit="feedback.createFeedback()">
+							<br/>
+							<label>Strengths</label>
+							<br/>
+							<input class="form-control input-lg" type="text" ng-model="feedback.feedbackData.strength" 		placeholder=".....">
+							<br/>
+							<label>Weakness</label>
+							<br/>
+							<input class="form-control input-lg" type="text" ng-model="feedback.feedbackData.weakness" 		placeholder=".....">
+						</form>
+						<br/>
+
+						<div class="checkbox">
+						    <label>
+						      <input type="checkbox" id="anonymous"> Submit as Anonymous
+						    </label>
+						</div>
+						<button ng-click="feedback.createFeedback()"  class="btn btn-primary">Submit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row" ng-if="main.loggedIn" ng-show="feedback.doShowFeedback==true" style="padding-left:-2px;">
+	<div class="col-md-6">
+		<div ng-class="row" class="panel panel-primary">
+			<div class="panel panel-primary" ng-show="feedback.doShowFeedback==true">
+				<div class="panel-heading">Your Strength</div>
+				<div class="list-group" style="height: 300px; overflow-y: scroll;">
+					<li ng-repeat=	"each in feedback.feedbacks | reverse">
+						<a href="#" class="list-group-item">{{ each.strength }}
+						</br>-- {{ each.createdBy }}</a>
+					</li>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div ng-class="row" class="panel panel-primary">
+			<div class="panel panel-primary" ng-show="feedback.doShowFeedback==true">
+				<div class="panel-heading">Areas of Improvement</div>
+				<div class="list-group" style="height: 300px; overflow-y: scroll;">
+					<li ng-repeat=	"each in feedback.feedbacks | reverse">
+						<a href="#" class="list-group-item">{{ each.weakness }}
+						</br>-- {{ each.createdBy }}</a>
+					</li>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
